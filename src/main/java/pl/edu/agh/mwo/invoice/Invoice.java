@@ -25,6 +25,11 @@ public class Invoice {
 	}
 
 	public BigDecimal getTotal() {
+		
+		for (Product p :products){
+		
+			
+		}
 		return null;
 	}
 }
