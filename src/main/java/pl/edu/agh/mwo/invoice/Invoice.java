@@ -18,7 +18,10 @@ public class Invoice {
 
 	}
 
-	public void addProduct(Product product, Integer quantity) {
+	public void addProduct(Product product, Integer quantity){
+		if (quantity <= 0) {		
+			throw new IllegalArgumentException();
+		}
 		// TODO: implement
 		for (int i = 0; i<quantity; i ++){
 			
@@ -51,8 +54,7 @@ public class Invoice {
 	}
 
 	public BigDecimal getTotal() {
-		BigDecimal total = BigDecimal.ZERO;
-		total = this.getTax().add(getTax());
+		BigDecimal total = this.getTax().add(this.getSubtotal());
 
 		
 		return total;

@@ -2,7 +2,7 @@ package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
 
-import org.hamcrest.Matchers;
+import org.hamcrest.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
