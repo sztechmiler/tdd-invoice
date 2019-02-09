@@ -27,7 +27,7 @@ public class Invoice {
 	public BigDecimal getTotal() {
 		
 		for (Product p :products){
-		
+		p.getPrice();
 			
 		}
 		return null;
