@@ -15,19 +15,15 @@ public class Invoice {
 	public void addProduct(Product product) {
 		
 		this.products.add(product);
-		
-		// TODO: implement
+
 	}
 
 	public void addProduct(Product product, Integer quantity) {
 		// TODO: implement
 		for (int i = 0; i<quantity; i ++){
 			
-			
-			
+			products.add(product);
 		}
-		this.products.add(product);
-
 
 	}
 	
@@ -36,7 +32,7 @@ public class Invoice {
 		BigDecimal subtotal = BigDecimal.ZERO;
 		
 		
-		for (Product p: products){
+		for (Product p : this.products){
 			
 			subtotal = subtotal.add(p.getPrice());
 		}
@@ -45,22 +41,20 @@ public class Invoice {
 	}
 
 	public BigDecimal getTax() {
-		BigDecimal taxVal = new BigDecimal(0);
+		BigDecimal taxVal = BigDecimal.ZERO;
 		
 		for (Product p: products){
-			taxVal.add(p.getTaxPercent().multiply(p.getPrice()));			
+			taxVal = taxVal.add(p.getTaxPercent().multiply(p.getPrice()));			
 		}
 		
 		return taxVal;
 	}
 
 	public BigDecimal getTotal() {
-		BigDecimal subtotal = new BigDecimal(0);
+		BigDecimal total = BigDecimal.ZERO;
+		total = this.getTax().add(getTax());
+
 		
-		for (Product p: products){
-			subtotal.add(p.getPriceWithTax());			
-		}
-		
-		return subtotal;
+		return total;
 	}
 }
