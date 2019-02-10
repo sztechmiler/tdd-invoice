@@ -2,6 +2,7 @@ package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -21,6 +22,87 @@ public class InvoiceTest {
 	@Before
 	public void createEmptyInvoiceForTheTest() {
 		invoice = new Invoice();
+	}
+	
+	
+	@Test
+	public void testPrintIsNotEmpty() {
+		String print = invoice.getAsText();
+		Assert.assertNotEquals("", print);
+	}
+	
+	@Test
+	public void testPrintIsNotNull() {
+		String print = invoice.getAsText();
+		Assert.assertNotEquals(null, print);
+	}
+	
+	@Test
+	public void testFirstElementOfInvoicePrintIsNumber() {
+		String number = invoice.getNumber().toString();
+		String printedInvoice = invoice.getAsText();
+		Assert.assertThat(
+				printedInvoice, 
+				Matchers.containsString("nr: " + number));
+	}
+	
+	@Test
+	public void testInvoicePrintedHasProductNames() {
+		invoice.addProduct(new TaxFreeProduct("Owoce", new BigDecimal("200")));
+		invoice.addProduct(new DairyProduct("Maslanka", new BigDecimal("100")));
+		invoice.addProduct(new OtherProduct("Wino", new BigDecimal("10")));
+		String printedInvoice = invoice.getAsText();
+		Assert.assertThat(
+				printedInvoice, 
+				Matchers.containsString("Owoce"));
+		
+		Assert.assertThat(
+				printedInvoice, 
+				Matchers.containsString("Maslanka"));
+		
+		Assert.assertThat(
+				printedInvoice, 
+				Matchers.containsString("Wino"));
+	}
+	
+	@Test
+	public void testPrintingIsInOrder() {
+		// 2x kubek - price: 10
+		invoice.addProduct(new TaxFreeProduct("Kubek", new BigDecimal("5")), 2);
+		String printedInvoice = invoice.getAsText();
+
+		Assert.assertThat(
+				printedInvoice, 
+				Matchers.containsString("Kubek 2 5"));
+		
+	}
+	
+
+	
+	@Test
+	public void testaddingThesameProduct() {
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")));
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")));
+		
+		Assert.assertThat(
+				invoice.getAsText(),
+				Matchers.containsString("Chleb 2 5")
+				
+				);
+		
+	}
+	
+	public void testInvoicePrintoutWhole() {
+		String number = invoice.getNumber().toString();
+		// 2x kubek - price: 10
+		invoice.addProduct(new TaxFreeProduct("Kubek", new BigDecimal("5")), 2);
+		invoice.addProduct(new TaxFreeProduct("Czekolada", new BigDecimal("3")), 10);
+		String printedInvoice = invoice.getAsText();
+		
+		Assert.assertThat(
+				printedInvoice, 
+				Matchers.containsString("nr: " + number + "\nKubek, sztuk: 2, cena: 5\nCzekolada, sztuk: 10, cena: 3"));
+		
 	}
 	
 	
