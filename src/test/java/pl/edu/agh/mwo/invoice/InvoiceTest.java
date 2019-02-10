@@ -1,7 +1,9 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 
+import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,7 +22,52 @@ public class InvoiceTest {
 	public void createEmptyInvoiceForTheTest() {
 		invoice = new Invoice();
 	}
-
+	
+	
+	@Test
+	public void testInvoiceHasNumber() {
+		Integer number = invoice.getNumber();
+		Assert.assertNotNull(number);
+	}
+	
+	@Test
+	public void testInvoiceHasNumberGreaterThanZero() {
+		
+		for (int i = 0; i < 100; i++) {
+			
+			
+		
+		Integer number = invoice.getNumber();
+		Assert.assertThat(number, Matchers.greaterThan(0));
+		}
+	}
+	
+	@Test
+	public void testInvoiceIsNotNull() {
+		Integer number = invoice.getNumber();
+		Assert.assertNotEquals(null, number);
+	}
+	
+	@Test
+	public void testTwoInvoicesHaveDifferentNumber() {
+		Integer number = invoice.getNumber();
+		Integer number2 = new Invoice().getNumber();
+		Assert.assertNotEquals(number, number2);
+	}
+	
+	@Test
+	public void testSameInvoiceHasSameNumber() {
+		Integer number = invoice.getNumber();
+		Integer number2 = invoice.getNumber();
+		Assert.assertEquals(number, number2);
+	}
+	
+	public void testNextInvoiceHasGreaterNumber() {
+		Integer number = invoice.getNumber();
+		Integer number2 = new Invoice().getNumber();
+		Assert.assertThat(number, Matchers.greaterThan(number2));
+	}
+	
 	@Test
 	public void testEmptyInvoiceHasEmptySubtotal() {
 		Assert.assertThat(BigDecimal.ZERO, Matchers.comparesEqualTo(invoice.getNetTotal()));
